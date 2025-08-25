@@ -11,7 +11,9 @@ Welcome to **Philosophers** — a 42 project that dives into the core of multith
 **philosophers** is part of the 42 school curriculum. The goal: simulate the classic **Dining Philosophers Problem** — a concurrency problem that illustrates synchronization issues and how to avoid them.
 
 🍴 Philosophers sit at a table with forks between them
+
 💤 They think, eat, and sleep
+
 ⏳ But if they can’t eat in time… they die
 
 ---
