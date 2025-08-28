@@ -6,7 +6,7 @@
 /*   By: kmaeda <kmaeda@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 15:14:18 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/08/28 15:14:40 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/08/28 22:06:00 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,32 @@ void	drop_fork(t_philo *philo)
 	}
 }
 
+void	*monitor_death(void *data)
+{
+	t_data	*d;
+	long	current_time;
+	int	i;
+
+	d = (t_data *)data;
+	while (!d->end)
+	{
+		i = 0;
+		while (i < d->philos)
+		{
+			current_time = get_time();
+			if ((current_time - d->philo_array[i]->last_meal) > d->die)
+			{
+				print_status(&d->philo_array[i], "died");
+				d->end = 1;
+				return (NULL);
+			}
+			i++;
+		}
+		usleep(1000);
+	}
+	return (NULL);
+}
+
 void	*routine(void *data)
 {
 	t_philo	*philo;
@@ -57,6 +83,8 @@ void	*routine(void *data)
 	philo = (t_philo *)data;
 	while (1)
 	{
+		if (philo->data->end)
+			break ;
 		pick_fork(philo);
 		print_status(philo, "is eating");
 		philo->last_meal = get_time();

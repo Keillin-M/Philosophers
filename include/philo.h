@@ -6,7 +6,7 @@
 /*   By: kmaeda <kmaeda@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 11:29:25 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/08/26 11:36:46 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/08/28 21:33:24 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_data
 	int				sleep;
 	int				must_eat;
 	int				start_time;
+	int				end;
 	mutex			print_lock;
 	t_philo			*philo_array;
 	pthread_mutex_t	*forks;
