@@ -18,7 +18,7 @@ typedef struct s_philo
 	int			id;
 	int			last_meal;
 	int			meal_count;
-	s_data		*shared_data;
+	s_data		*data;
 	pthread_t	*thread;
 }	t_philo;
 
