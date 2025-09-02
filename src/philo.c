@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmaeda <kmaeda@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: kmaeda <kmaeda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:34:04 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/08/25 13:37:08 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/09/02 18:07:50 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	one_philo(t_data *data)
+{
+	data->start_time = get_time();
+	printf("%ld Philo 1 has taken a fork\n", get_time() - data->start_time);
+	usleep(data->die * 1000);
+	printf("%ld Philo 1 has died\n", get_time() - data->start_time);
+	return (0);
+}
 
 int	parse(int argc, char **argv, t_data *data)
 {
@@ -31,24 +40,34 @@ int	parse(int argc, char **argv, t_data *data)
 	}
 	else
 		data->must_eat = -1;
+	if (data->philos == 1)
+		one_philo(data);
 	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	int		i;
-	t_data	*data;
-	t_philo	*philo;
+	t_data	data;
 
-	i = 0;
-	pthread_mutex_init(&mutex, NULL);
 	if (parse(argc, argv, &data))
 		return (1);
-	if (ft_init(philo, data))
+	if (data.philos == 1)
+		return (0);
+	if (ft_init(&data))
 		return (1);
-	if (create_thread(data))
+	if (create_thread(&data))
 		return (1);
-	if (join_thread(data))
+	if (join_thread(&data))
 		return (1);
-	pthread_mutex_destroy(&mutex);
+	if (data.must_eat != -1)
+	{
+		if (data.must_eat == 1)
+			printf("All philosophers have eaten at least %d time\n", 
+				data.must_eat);
+		else
+			printf("All philosophers have eaten at least %d times\n", 
+				data.must_eat);
+	}
+	ft_clean(&data);
+	return (0);
 }

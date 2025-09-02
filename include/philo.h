@@ -3,37 +3,71 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmaeda <kmaeda@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: kmaeda <kmaeda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 11:29:25 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/08/28 21:33:24 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/09/02 17:20:35 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-typedef struct s_philo
+# include <pthread.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <sys/time.h>
+# include <limits.h>
+
+typedef struct s_data	t_data;
+typedef struct s_philo	t_philo;
+
+struct s_philo
 {
 	int			id;
-	int			last_meal;
+	long		last_meal;
 	int			meal_count;
-	s_data		*data;
-	pthread_t	*thread;
-}	t_philo;
+	t_data		*data;
+	pthread_t	thread;
+};
 
-typedef struct s_data
+struct s_data
 {
 	int				philos;
 	int				die;
 	int				eat;
 	int				sleep;
 	int				must_eat;
-	int				start_time;
+	long			start_time;
 	int				end;
-	mutex			print_lock;
+	pthread_t		monitor_thread;
+	pthread_t		monitor_eat;
 	t_philo			*philo_array;
+	pthread_mutex_t	print_lock;
 	pthread_mutex_t	*forks;
-}	t_data;
+};
+
+// philo.c
+int		one_philo(t_data *data);
+int		parse(int argc, char **argv, t_data *data);
+
+// init.c
+int		ft_init(t_data *data);
+int		create_thread(t_data *data);
+int		join_thread(t_data *data);
+
+// routine.c
+void	*monitor_eat_enough(void *data);
+void	*monitor_death(void *data);
+void	pick_fork(t_philo *philo);
+void	drop_fork(t_philo *philo);
+void	*routine(void *data);
+
+// utils.c
+long	get_time(void);
+void	print_status(t_philo *philo, char *status);
+int		parse_int(const char *nptr);
+void	ft_clean(t_data *data);
 
 #endif

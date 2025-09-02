@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmaeda <kmaeda@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: kmaeda <kmaeda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 11:48:12 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/08/26 11:55:45 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/09/02 17:53:00 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <sys/time.h>
 
 long	get_time(void)
 {
@@ -24,9 +23,13 @@ long	get_time(void)
 void	print_status(t_philo *philo, char *status)
 {
 	long	timestamp;
+
 	pthread_mutex_lock(&philo->data->print_lock);
-	timestamp = get_time() - philo->data->start_time;
-	printf("%ld %d %s\n", timestamp, philo->ide, status);
+	if (!philo->data->end)
+	{
+		timestamp = get_time() - philo->data->start_time;
+		printf("%ld Philo %d %s\n", timestamp, philo->id, status);
+	}
 	pthread_mutex_unlock(&philo->data->print_lock);
 }
 
@@ -51,4 +54,21 @@ int	parse_int(const char *nptr)
 	if (*nptr != '\0' || result == 0)
 		return (-1);
 	return ((int)result);
+}
+
+void	ft_clean(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->philos)
+	{
+		pthread_mutex_destroy(&data->forks[i]);
+		i++;
+	}
+	pthread_mutex_destroy(&data->print_lock);
+	if (data->forks)
+		free(data->forks);
+	if (data->philo_array)
+		free(data->philo_array);
 }

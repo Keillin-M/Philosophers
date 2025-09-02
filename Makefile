@@ -1,6 +1,6 @@
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror
 LDFLAGS = -pthread
 
 # Colors for output
@@ -26,6 +26,8 @@ INCLUDES = -I$(INCLUDE_DIR)
 # Source files
 SRCS = $(SRC_DIR)/philo.c \
 	$(SRC_DIR)/utils.c \
+	$(SRC_DIR)/init.c \
+	$(SRC_DIR)/routine.c
 
 # object files
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
