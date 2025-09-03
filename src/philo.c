@@ -6,7 +6,7 @@
 /*   By: kmaeda <kmaeda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:34:04 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/09/02 18:07:50 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/09/03 14:48:37 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ int	parse(int argc, char **argv, t_data *data)
 		return (printf("Error: Invalid argument\n"), 1);
 	if (argc == 6)
 	{
-		data->must_eat = parse_int(argv[5]);
+		if (argv[5][0] - '0' == 0 && argv[5][1] == '\0')
+			data->must_eat = 0;
+		else
+			data->must_eat = parse_int(argv[5]);
 		if (data->must_eat == -1)
 			return (printf("Error: Invalid argument\n"), 1);
 	}
@@ -59,12 +62,12 @@ int	main(int argc, char **argv)
 		return (1);
 	if (join_thread(&data))
 		return (1);
-	if (data.must_eat != -1)
+	if (data.must_eat > 0)
 	{
 		if (data.must_eat == 1)
 			printf("All philosophers have eaten at least %d time\n", 
 				data.must_eat);
-		else
+		else if (data.must_eat > 1)
 			printf("All philosophers have eaten at least %d times\n", 
 				data.must_eat);
 	}

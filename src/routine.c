@@ -6,7 +6,7 @@
 /*   By: kmaeda <kmaeda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 15:14:18 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/09/02 17:44:11 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/09/03 14:48:29 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*monitor_eat_enough(void *data)
 	t_data	*d;
 
 	d = (t_data *)data;
-	while (!d->end && d->must_eat != -1)
+	while (!d->end && d->must_eat > 0)
 	{
 		all_full = 1;
 		i = -1;
@@ -126,7 +126,7 @@ void	*routine(void *data)
 		usleep(philo->data->eat * 1000);
 		philo->meal_count++;
 		drop_fork(philo);
-		if (philo->data->must_eat != -1 
+		if (philo->data->must_eat > 0 
 			&& philo->meal_count >= philo->data->must_eat)
 			break ;
 		print_status(philo, "is sleeping");

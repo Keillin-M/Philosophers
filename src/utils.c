@@ -28,7 +28,7 @@ void	print_status(t_philo *philo, char *status)
 	if (!philo->data->end)
 	{
 		timestamp = get_time() - philo->data->start_time;
-		printf("%ld Philo %d %s\n", timestamp, philo->id, status);
+		printf("%ld %d %s\n", timestamp, philo->id, status);
 	}
 	pthread_mutex_unlock(&philo->data->print_lock);
 }
