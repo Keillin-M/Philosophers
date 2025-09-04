@@ -27,7 +27,9 @@ INCLUDES = -I$(INCLUDE_DIR)
 SRCS = $(SRC_DIR)/philo.c \
 	$(SRC_DIR)/utils.c \
 	$(SRC_DIR)/init.c \
-	$(SRC_DIR)/routine.c
+	$(SRC_DIR)/routine.c \
+	$(SRC_DIR)/monitor.c \
+	$(SRC_DIR)/fork.c \
 
 # object files
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

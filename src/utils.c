@@ -6,7 +6,7 @@
 /*   By: kmaeda <kmaeda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 11:48:12 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/09/02 17:53:00 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/09/04 15:54:40 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_status(t_philo *philo, char *status)
 	long	timestamp;
 
 	pthread_mutex_lock(&philo->data->print_lock);
-	if (!philo->data->end)
+	if (!check_end(philo->data))
 	{
 		timestamp = get_time() - philo->data->start_time;
 		printf("%ld %d %s\n", timestamp, philo->id, status);
@@ -64,9 +64,12 @@ void	ft_clean(t_data *data)
 	while (i < data->philos)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
+		pthread_mutex_destroy(&data->philo_array[i].meal_count_lock);
+		pthread_mutex_destroy(&data->philo_array[i].last_meal_lock);
 		i++;
 	}
 	pthread_mutex_destroy(&data->print_lock);
+	pthread_mutex_destroy(&data->end_lock);
 	if (data->forks)
 		free(data->forks);
 	if (data->philo_array)

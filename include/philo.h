@@ -6,7 +6,7 @@
 /*   By: kmaeda <kmaeda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 11:29:25 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/09/02 17:20:35 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/09/04 16:09:26 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,13 @@ typedef struct s_philo	t_philo;
 
 struct s_philo
 {
-	int			id;
-	long		last_meal;
-	int			meal_count;
-	t_data		*data;
-	pthread_t	thread;
+	int				id;
+	long			last_meal;
+	int				meal_count;
+	t_data			*data;
+	pthread_t		thread;
+	pthread_mutex_t	last_meal_lock;
+	pthread_mutex_t	meal_count_lock;
 };
 
 struct s_data
@@ -44,13 +46,14 @@ struct s_data
 	pthread_t		monitor_thread;
 	pthread_t		monitor_eat;
 	t_philo			*philo_array;
+	pthread_mutex_t	end_lock;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	*forks;
 };
 
 // philo.c
-int		one_philo(t_data *data);
-int		parse(int argc, char **argv, t_data *data);
+int		check_end(t_data *data);
+void	set_end(t_data *data);
 
 // init.c
 int		ft_init(t_data *data);
@@ -58,11 +61,19 @@ int		create_thread(t_data *data);
 int		join_thread(t_data *data);
 
 // routine.c
+long	get_last_meal(t_philo *philo);
+void	set_last_meal(t_philo *philo);
+int		get_meal_count(t_philo *philo);
+void	increase_meal(t_philo *philo);
+void	*routine(void *data);
+
+// monitor.c
 void	*monitor_eat_enough(void *data);
 void	*monitor_death(void *data);
+
+// fork.c
 void	pick_fork(t_philo *philo);
 void	drop_fork(t_philo *philo);
-void	*routine(void *data);
 
 // utils.c
 long	get_time(void);

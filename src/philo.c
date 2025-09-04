@@ -6,13 +6,30 @@
 /*   By: kmaeda <kmaeda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:34:04 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/09/03 14:48:37 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/09/04 14:56:46 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	one_philo(t_data *data)
+int	check_end(t_data *data)
+{
+	int	result;
+
+	pthread_mutex_lock(&data->end_lock);
+	result = data->end;
+	pthread_mutex_unlock(&data->end_lock);
+	return (result);
+}
+
+void	set_end(t_data *data)
+{
+	pthread_mutex_lock(&data->end_lock);
+	data->end = 1;
+	pthread_mutex_unlock(&data->end_lock);
+}
+
+static int	one_philo(t_data *data)
 {
 	data->start_time = get_time();
 	printf("%ld Philo 1 has taken a fork\n", get_time() - data->start_time);
@@ -21,7 +38,7 @@ int	one_philo(t_data *data)
 	return (0);
 }
 
-int	parse(int argc, char **argv, t_data *data)
+static int	parse(int argc, char **argv, t_data *data)
 {
 	if (argc != 5 && argc != 6)
 		return (printf("Error: Wrong number of arguments\n"), 1);

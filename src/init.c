@@ -6,7 +6,7 @@
 /*   By: kmaeda <kmaeda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 15:16:06 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/09/02 18:03:40 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/09/04 15:59:38 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,13 @@ int	ft_init(t_data *data)
 	{
 		data->philo_array[i].id = i + 1;
 		data->philo_array[i].meal_count = 0;
+		pthread_mutex_init(&data->philo_array[i].last_meal_lock, NULL);
+		pthread_mutex_init(&data->philo_array[i].meal_count_lock, NULL);
 		data->philo_array[i].data = data;
 		i++;
 	}
 	pthread_mutex_init(&data->print_lock, NULL);
+	pthread_mutex_init(&data->end_lock, NULL);
 	return (0);
 }
 
@@ -49,7 +52,7 @@ int	create_thread(t_data *data)
 		if (pthread_create(&data->philo_array[i].thread, NULL, 
 				&routine, &data->philo_array[i]) != 0)
 			return (1);
-		data->philo_array[i].last_meal = data->start_time;
+		set_last_meal(&data->philo_array[i]);
 		i++;
 	}
 	if (pthread_create(&data->monitor_thread, NULL, monitor_death,
