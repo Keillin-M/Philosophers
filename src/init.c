@@ -6,7 +6,7 @@
 /*   By: kmaeda <kmaeda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 15:16:06 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/09/04 15:59:38 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/09/05 12:22:10 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ int	create_thread(t_data *data)
 	data->start_time = get_time();
 	while (i < data->philos)
 	{
+		set_last_meal(&data->philo_array[i]);
 		if (pthread_create(&data->philo_array[i].thread, NULL, 
 				&routine, &data->philo_array[i]) != 0)
 			return (1);
-		set_last_meal(&data->philo_array[i]);
 		i++;
 	}
 	if (pthread_create(&data->monitor_thread, NULL, monitor_death,

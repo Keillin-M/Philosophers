@@ -1,6 +1,6 @@
 NAME = philo
 CC = cc
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 LDFLAGS = -pthread
 
 # Colors for output

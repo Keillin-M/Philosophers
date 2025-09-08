@@ -6,7 +6,7 @@
 /*   By: kmaeda <kmaeda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:34:04 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/09/04 14:56:46 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/09/05 11:48:27 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void	set_end(t_data *data)
 static int	one_philo(t_data *data)
 {
 	data->start_time = get_time();
-	printf("%ld Philo 1 has taken a fork\n", get_time() - data->start_time);
+	printf("%ld 1 has taken a fork\n", get_time() - data->start_time);
 	usleep(data->die * 1000);
-	printf("%ld Philo 1 has died\n", get_time() - data->start_time);
+	printf("%ld 1 has died\n", get_time() - data->start_time);
 	return (0);
 }
 
@@ -79,15 +79,6 @@ int	main(int argc, char **argv)
 		return (1);
 	if (join_thread(&data))
 		return (1);
-	if (data.must_eat > 0)
-	{
-		if (data.must_eat == 1)
-			printf("All philosophers have eaten at least %d time\n", 
-				data.must_eat);
-		else if (data.must_eat > 1)
-			printf("All philosophers have eaten at least %d times\n", 
-				data.must_eat);
-	}
 	ft_clean(&data);
 	return (0);
 }
